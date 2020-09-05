@@ -42,12 +42,37 @@ public class CourseRepositoryTest {
     }
 
     @Test
-    @DirtiesContext
-    public void deleteById(){
+    @DirtiesContext //nie idzie z bufora hybernate
+    public void deleteByIdTest() {
         courseRepository.deleteById(10002L);
         Assert.assertNull(courseRepository.findById(10002L));
     }
 
+    @Test
+    @DirtiesContext
+    public void saveEditTest() {
+        Course course = courseRepository.findById(10003L);
+        Assert.assertEquals("Testowo3", course.getName());
+
+        course.setName("Testowo3 - update");
+        courseRepository.save(course);
+
+        Course courseAfterUpdate = courseRepository.findById(10003L);
+        Assert.assertEquals("Testowo3 - update", courseAfterUpdate.getName());
+    }
+
+    @Test
+    @DirtiesContext
+    public void saveInsertTest() {
+        Course course = courseRepository.findById(1L);
+        Assert.assertNull(course);
+
+        Course newCourse = new Course("Testowo - insert");
+        courseRepository.save(newCourse);
+
+        Course courseAfterInsert = courseRepository.findById(1L);
+        Assert.assertEquals("Testowo - insert", courseAfterInsert.getName());
+    }
 
 
 }
