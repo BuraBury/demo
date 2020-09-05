@@ -74,5 +74,11 @@ public class CourseRepositoryTest {
         Assert.assertEquals("Testowo - insert", courseAfterInsert.getName());
     }
 
+    @Test
+    public void playWithEM() {
+        courseRepository.playWithEntityManager();
+    }
+
+
 
 }
