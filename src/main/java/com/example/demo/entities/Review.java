@@ -1,9 +1,6 @@
 package com.example.demo.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Review {
@@ -17,6 +14,9 @@ public class Review {
 
     @Column(nullable = false)
     private String description;
+
+    @ManyToOne // relacja w obie strony - jeden kurs -> wiele ocen
+    private Course course;
 
     protected Review() {
     }
@@ -41,6 +41,13 @@ public class Review {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     @Override

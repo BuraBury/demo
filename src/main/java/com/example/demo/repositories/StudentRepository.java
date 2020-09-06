@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.entities.Passport;
 import com.example.demo.entities.Student;
 
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ public class StudentRepository {
 
     @Autowired
     EntityManager em;
-
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public Student findById(Long id) {
@@ -36,6 +36,16 @@ public class StudentRepository {
         }
         return student;
     }
+
+    public void saveStudentWithPassport() {
+        Passport passport = new Passport("z1234");
+        em.persist(passport);
+        Student student = new Student("Jan");
+        student.setPassport(passport);
+        em.persist(student);
+    }
+
+
 
 
 }

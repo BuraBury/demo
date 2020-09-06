@@ -15,6 +15,7 @@ akceptujemy w tym przypadku wyniki: 1.9 i 2.1
 package com.example.demo;
 
 import com.example.demo.entities.Course;
+import com.example.demo.entities.Review;
 import com.example.demo.repositories.CourseRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,10 +28,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class) //służy do tego żeby przestawić się na tryb springa
 @SpringBootTest(classes = DemoApplication.class) //wskazuje od której klasy zaczynamy testy
+@Transactional
 
 public class CourseRepositoryTest {
 
@@ -127,6 +131,33 @@ public class CourseRepositoryTest {
     public void findAllByNamedQuery() {
         List result = em.createNamedQuery("get_all_query").getResultList();
         logger.info("Wynik => {}", result);
+    }
+
+    @Test
+    public void runAddReviewForCourseTest() {
+        Long courseId = 10005L;
+        Review review1 = new Review("10.0", "Super");
+        Review review2 = new Review("5.0", "Taki sobie");
+
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(review1);
+        reviews.add(review2);
+
+        courseRepository.addReviewsForCourse(courseId, reviews);
+    }
+
+    @Test
+    public void retrieveReviewsForCourse() {
+        Course course = courseRepository.findById(10004L);
+        logger.info("Course: => {}", course);
+        logger.info("Reviews: => {}", course.getRv());
+    }
+
+    @Test
+    public void retrieveCourseForReview() {
+        Review review = em.find(Review.class, 50001L);
+        logger.info("Review: => {}", review);
+        logger.info("Course: => {}", review.getCourse());
     }
 
 

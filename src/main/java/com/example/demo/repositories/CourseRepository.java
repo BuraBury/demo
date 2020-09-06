@@ -2,6 +2,7 @@ package com.example.demo.repositories;
 
 import com.example.demo.entities.Course;
 
+import com.example.demo.entities.Review;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional //pozwala na otwarte polaczenie
@@ -16,7 +18,6 @@ public class CourseRepository {
 
     @Autowired
     EntityManager em; //pełni rolę Proxy, uruchamia logikę, która ma wykonać zapytania na bazie danych
-
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public Course findById(Long id) {
@@ -47,6 +48,18 @@ public class CourseRepository {
 
         course.setName("TEST@@@");
         em.refresh(course); //odzyskuje wartosc name = "Test";
+
+    }
+
+    public void addReviewsForCourse(Long courseId, List<Review> reviews) {
+        Course course = findById(courseId);
+
+        for (Review review : reviews) {
+            course.addRv(review);
+            review.setCourse(course);
+
+            em.persist(review);
+        }
 
     }
 
