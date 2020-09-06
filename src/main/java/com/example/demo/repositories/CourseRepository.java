@@ -10,13 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional //pozwala na otwarte polaczenie
 public class CourseRepository {
 
     @Autowired
-    EntityManager em;
+    EntityManager em; //pełni rolę Proxy, uruchamia logikę, która ma wykonać zapytania na bazie danych
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -31,7 +32,7 @@ public class CourseRepository {
 
     public Course save(Course course) {
         if (course.getId() == null) {
-            em.persist(course); //odpowiada INSERT INTO, nadaje ID
+            em.persist(course); //odpowiada INSERT INTO, nadaje ID obiektowi, po zakonczeniu tranzakcji obiekt zostaje wrzucony do bazy danych
         } else {
             em.merge(course); //odpowiada UPDATE
         }
@@ -40,10 +41,18 @@ public class CourseRepository {
 
     public void playWithEntityManager() {
         Course course = new Course("Test");
-        em.persist(course); //nadaje ID obiektowi wrzucanemu do bazy
+        em.persist(course); //nadaje ID obiektowi wrzucanemu do bazy, czeka na wrzucenie do bazy danych
+        em.flush(); //zapisany obiekt do bazy danych
+
+        //em.detach(course); //zaprzestanie obserwowania obiektu
+        //em.clear(); - zaprzestanie obserwowania wszystkich obiektów - hurtowy detach()
+
         course.setName("TEST@@@");
+        em.refresh(course); //odzyskuje wartosc name = "Test";
 
     }
+
+
 
 
 }

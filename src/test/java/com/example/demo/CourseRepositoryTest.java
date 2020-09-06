@@ -5,6 +5,11 @@ Dobry test jednostkowy:
 3. Metoda nie zwraca żadnej wartości - bo void
 4. Metoda nie przyjmuje żadnych argumentów (chyba, że parametrized tests)
 5. Asserty jako jedyny sposób porównywania danych
+
+porównywanie typu double
+Asser.assertEquals(expected: 2.0, actual: 1.99, delta: 0.1);
+delta - odstępstwo na ile jesteśmy zadowoleni z wyniku, dla liczb zmiennoprzecinkowych.
+akceptujemy w tym przypadku wyniki: 1.9 i 2.1
  */
 
 package com.example.demo;
@@ -22,15 +27,18 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Table;
+import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = DemoApplication.class)
+@RunWith(SpringRunner.class) //służy do tego żeby przestawić się na tryb springa
+@SpringBootTest(classes = DemoApplication.class) //wskazuje od której klasy zaczynamy testy
+
 public class CourseRepositoryTest {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    CourseRepository courseRepository;
+    @Autowired //adnotacja służy do tego, żeby uruchomić wstrzykiwanie zależności
+            CourseRepository courseRepository;
 
     @Autowired
     EntityManager em;
@@ -48,6 +56,7 @@ public class CourseRepositoryTest {
         Assert.assertNull(courseRepository.findById(10002L));
     }
 
+    //w obu ponizszych testach najpierw sprawdzamy warunki początkowe, potem ustawiamy nową nazwę i testujemy raz jeszcze
     @Test
     @DirtiesContext
     public void saveEditTest() {
@@ -79,6 +88,47 @@ public class CourseRepositoryTest {
         courseRepository.playWithEntityManager();
     }
 
+    @Test
+    public void findAllJPQL() {
+        List resultList = em.createQuery("SELECT c FROM Course c").getResultList();
+        logger.info("Wynik => {}", resultList);
+    }
+
+    @Test
+    public void findCourseWith3InName() {
+        String ipql = "SELECT c FROM Course c WHERE name LIKE '%3%'";
+        List resultList = em.createQuery(ipql).getResultList();
+        logger.info("Wynik => {}", resultList);
+    }
+
+    @Test
+    public void findCourseWithTestInName() {
+        String ipql = "SELECT c FROM Course c WHERE name LIKE 'Test%'";
+        List resultList = em.createQuery(ipql).getResultList();
+        logger.info("Wynik => {}", resultList);
+    }
+
+    @Test
+    public void findAllJPQLWithUpperName() {
+        String ipql = "SELECT UPPER (c.name) FROM Course c";
+        List resultList = em.createQuery(ipql).getResultList();
+        logger.info("Wynik => {}", resultList);
+    }
+
+    @Test
+    public void findCoursesWithIdBetween10003And10005() {
+        String ipql = "SELECT c FROM Course c WHERE c.id BETWEEN 10003 AND 10005";
+        //String ipql = "SELECT c FROM Course c WHERE c.id >= 10003 AND c.id <= 10005";
+        List resultList = em.createQuery(ipql).getResultList();
+        logger.info("Wynik => {}", resultList);
+    }
+
+    @Test
+    //@NamedQuery(name="get_all_query", query = "SELECT c FROM Course c")
+    public void findAllByNamedQuery() {
+        List result = em.createNamedQuery("get_all_query").getResultList();
+        logger.info("Wynik => {}", result);
+    }
 
 
 }
