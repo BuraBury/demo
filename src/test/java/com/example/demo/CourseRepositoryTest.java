@@ -102,9 +102,9 @@ public class CourseRepositoryTest {
     }
 
     @Test
+    //@NamedQuery(name = "get_all_query_test_in_name", query = "SELECT c FROM Course c WHERE c.name LIKE 'Test%'")
     public void findCourseWithTestInName() {
-        String ipql = "SELECT c FROM Course c WHERE name LIKE 'Test%'";
-        List resultList = em.createQuery(ipql).getResultList();
+        List resultList = em.createNamedQuery("get_all_query_test_in_name").getResultList();
         logger.info("Wynik => {}", resultList);
     }
 

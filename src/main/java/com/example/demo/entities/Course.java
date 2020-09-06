@@ -5,8 +5,10 @@ import javax.persistence.*;
 @Entity //na podstawie klasy bedzie generowana tabela w bazie danych
 @Table(name = "course") //zmiana nazwy tabeli
 @NamedQueries(value = {
-        @NamedQuery(name="get_all_query", query = "SELECT c FROM Course c"), //mozemy sie odwołać po nazwie do naszego zapytania
-        @NamedQuery(name = "get_all_query_test_in_name", query = "SELECT c FROM Course c WHERE c.name LIKE 'Test%'")
+        @NamedQuery(name="get_all_query",
+                query = "SELECT c FROM Course c"), //mozemy sie odwołać po nazwie do naszego zapytania
+        @NamedQuery(name = "get_all_query_test_in_name",
+                query = "SELECT c FROM Course c WHERE c.name LIKE 'Test%'")
 })
 
 public class Course {
