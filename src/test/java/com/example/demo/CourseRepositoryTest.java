@@ -27,7 +27,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Table;
 import java.util.List;
 
 @RunWith(SpringRunner.class) //służy do tego żeby przestawić się na tryb springa

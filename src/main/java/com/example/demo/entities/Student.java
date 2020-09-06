@@ -1,9 +1,6 @@
 package com.example.demo.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Student {
@@ -14,6 +11,11 @@ public class Student {
 
     @Column(nullable = false)
     private String name;
+
+    //relacja 1 do 1 - jeden student - jeden paszport
+    //mapowanie tabel - nawiązanie relacji
+    @OneToOne
+    private Passport passport;
 
     protected Student(){}
     public Student(String name) {
@@ -38,6 +40,9 @@ public class Student {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+
+
 
 
 }

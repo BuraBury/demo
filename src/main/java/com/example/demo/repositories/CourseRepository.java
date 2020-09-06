@@ -2,15 +2,13 @@ package com.example.demo.repositories;
 
 import com.example.demo.entities.Course;
 
-import javax.persistence.EntityManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Repository
 @Transactional //pozwala na otwarte polaczenie
@@ -51,8 +49,6 @@ public class CourseRepository {
         em.refresh(course); //odzyskuje wartosc name = "Test";
 
     }
-
-
 
 
 }
