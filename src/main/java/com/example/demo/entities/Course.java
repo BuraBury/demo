@@ -29,7 +29,7 @@ public class Course {
     @OneToMany(mappedBy = "course") //wlascicielem relacji jest ta encja, która jest @ManyToOne
     private List<Review> rv = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(mappedBy = "courses") //typ: Lazy
     private List<Student> students = new ArrayList<>();
 
     protected Course() {

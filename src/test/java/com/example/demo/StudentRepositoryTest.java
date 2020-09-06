@@ -47,5 +47,12 @@ public class StudentRepositoryTest {
         logger.info("Student => {}", passport.getStudent());
     }
 
+    @Test
+    public void getStudentAllCourses() {
+        Student student = em.find(Student.class, 20001L);
+        logger.info("Student => {}", student);
+        logger.info("Courses => {}", student.getCourses());
+    }
+
 
 }
