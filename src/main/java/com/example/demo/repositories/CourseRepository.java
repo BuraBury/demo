@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.entities.Course;
 
 import com.example.demo.entities.Review;
+import com.example.demo.entities.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,18 @@ public class CourseRepository {
 
             em.persist(review);
         }
+
+    }
+
+    public void addStudentWithCourse(Long studentId, Long courseId) {
+        Student student = em.find(Student.class, studentId);
+        Course course = findById(courseId);
+
+        student.addCourse(course);
+        course.addStudent(student);
+
+        em.persist(student);
+        em.persist(course);
 
     }
 

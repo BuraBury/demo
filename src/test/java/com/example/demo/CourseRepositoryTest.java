@@ -160,5 +160,10 @@ public class CourseRepositoryTest {
         logger.info("Course: => {}", review.getCourse());
     }
 
+    @Test
+    public void addStudentAndCourseTest() {
+        courseRepository.addStudentWithCourse(20003L, 10005L);
+    }
+
 
 }
